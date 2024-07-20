@@ -23,13 +23,14 @@ const Header = styled.nav`
   max-width: 850px;
   height: 50px;
   top: 0;
-  background-color: transparent;
+  background-color: white;
   display: flex;
   align-items: center;
+  position: fixed;
+  z-index: 1;
 `;
 
 const Content = styled.div`
-  //background-color: red;
   width: 100%;
   padding: 20px 15px;
   border: 1px solid black;
@@ -41,10 +42,10 @@ const Layout = () => {
     <>
       <GlobalStyle />
       <Wrapper>
-        <Banner />
         <Header>
           <Navigation />
         </Header>
+        <Banner />
         <Content>
           <Outlet />
         </Content>

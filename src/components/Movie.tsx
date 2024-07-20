@@ -1,12 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { makeImagePath } from "../api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  currentPathState,
+  isModalOpenState,
+  selectedMovieState,
+} from "../atoms";
+import { IMovie } from "../types";
+import { motion } from "framer-motion";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   cursor: pointer;
 `;
 
-const Image = styled.img`
+const Image = styled(motion.img)`
   width: 100%;
   border-radius: 10px;
 `;
@@ -15,24 +23,42 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Movie = ({
-  id,
-  title,
-  img,
-}: {
-  id: number;
-  title: string;
-  img: string;
-}) => {
+const Movie = ({ movie, path }: { movie: IMovie; path: string }) => {
   const navigate = useNavigate();
+  const setSelectedMovie = useSetRecoilState(selectedMovieState);
+  const currentPath = useRecoilValue(currentPathState);
+  const setIsModalOpen = useSetRecoilState(isModalOpenState);
 
   const gotoMovieDetail = (id: number) => {
-    navigate(`/movies/${id}`);
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+    if (currentPath === "/") {
+      navigate(`/movies/${id}`);
+    } else if (
+      currentPath === "/coming-soon" ||
+      currentPath === "/now-playing"
+    ) {
+      navigate(`${currentPath}/movies/${id}`);
+    }
   };
+
   return (
-    <Wrapper onClick={() => gotoMovieDetail(id)}>
-      <Image src={makeImagePath(img)} />
-      <Title>{title}</Title>
+    <Wrapper
+      layoutId={String(movie.id) + path}
+      onClick={() => gotoMovieDetail(movie.id)}
+      whileHover={{
+        y: -15,
+        transition: {
+          type: "spring",
+          mass: 0.5,
+          bounce: 0.25,
+          duration: 0.1,
+          ease: "easeOut",
+        },
+      }}
+    >
+      <Image src={makeImagePath(movie.poster_path)} />
+      <Title>{movie.title}</Title>
     </Wrapper>
   );
 };

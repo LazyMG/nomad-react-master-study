@@ -9,10 +9,10 @@ const Wrapper = styled.div`
   //font-size: 30px;
 `;
 
-const Loading = () => {
+const Loading = ({ size = "10%" }: { size?: string }) => {
   return (
     <Wrapper>
-      <img src={Spinner} alt="로딩중" width="10%" />
+      <img src={Spinner} alt="로딩중" width={size} />
     </Wrapper>
   );
 };

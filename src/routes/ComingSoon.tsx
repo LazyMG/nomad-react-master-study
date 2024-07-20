@@ -1,44 +1,27 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { IMovie } from "../types";
-import Movie from "../components/Movie";
 import { getComingSoon } from "../api";
 import Loading from "../components/Loading";
+import List from "../components/List";
+import { useQuery } from "react-query";
 
-const Wrapper = styled.div`
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+const Title = styled.h1`
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 15px;
 `;
 
 const ComingSoon = () => {
-  const [comingSoonMovies, setComingSoonMovies] = useState<IMovie[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getComingSoon();
-      setComingSoonMovies(response.results);
-      setIsLoading(false);
-    })();
-  }, []);
+  const { data, isLoading } = useQuery(["coming-soon"], getComingSoon);
 
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
-        <Wrapper>
-          {comingSoonMovies.map((movie) => (
-            <Movie
-              key={movie.id}
-              id={movie.id}
-              title={movie.title}
-              img={movie.poster_path}
-            />
-          ))}
-        </Wrapper>
+        <>
+          <Title>Coming Soon Movies</Title>
+          <List movies={data.results} path="/coming-soon" />
+        </>
       )}
     </>
   );

@@ -17,11 +17,15 @@ const Links = styled.ul`
 `;
 
 const LinkItem = styled.li<{ $isMatch: boolean }>`
-  padding: 5px;
+  padding: 5px 10px;
   font-weight: bold;
   position: relative;
   border-radius: 10px;
   background-color: ${({ $isMatch }) => $isMatch && "rgba(0,0,0,0.1)"};
+
+  &:hover {
+    background-color: ${({ $isMatch }) => ($isMatch ? "" : "rgba(0,0,0,0.04)")};
+  }
 `;
 
 const Circle = styled(motion.div)`
