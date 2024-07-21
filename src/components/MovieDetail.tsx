@@ -6,16 +6,16 @@ import { useQuery } from "react-query";
 import { IMovieDetail } from "../types";
 
 const Wrapper = styled.div`
-  //background-color: rgba(0, 0, 0, 0.8);
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 0, 0, 0.9);
   width: 100%;
   height: 100%;
   border-radius: 15px;
   position: relative;
+  min-width: 650px;
 `;
 
 const CloseButton = styled.div`
-  padding: 5px 10px;
+  padding: 5px 15px;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -23,6 +23,7 @@ const CloseButton = styled.div`
   border-radius: 50%;
   color: white;
   user-select: none;
+  font-size: 25px;
   cursor: pointer;
 `;
 
@@ -36,25 +37,40 @@ const Cover = styled.div`
 `;
 
 const Title = styled.h3`
-  color: black;
+  color: white;
   padding: 20px;
-  font-size: 28px;
+  font-size: 35px;
   position: relative;
   top: -90px;
+  font-family: "Anton", sans-serif;
 `;
 
 const OverView = styled.p`
   padding: 20px;
-  color: black;
+  color: white;
   position: relative;
+  font-size: 18px;
+
   top: -90px;
-  width: 60%;
+`;
+
+const Info = styled.div`
+  padding: 0 20px;
+  color: white;
+  position: relative;
+  font-size: 18px;
+
+  top: -90px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 `;
 
 const MovieDetail = ({ id }: { id: string }) => {
   const [selectedMovie, setSelectedMovie] = useRecoilState(selectedMovieState);
   const setModalIsOpen = useSetRecoilState(isModalOpenState);
-  const { data } = useQuery<IMovieDetail>(["detail", `${id}`], () =>
+  const { data, isLoading } = useQuery<IMovieDetail>(["detail", `${id}`], () =>
     getMovie(id)
   );
 
@@ -65,16 +81,39 @@ const MovieDetail = ({ id }: { id: string }) => {
 
   return (
     <Wrapper>
-      <CloseButton onClick={closeModal}>X</CloseButton>
+      <CloseButton onClick={closeModal}>{"X"}</CloseButton>
       <Cover
         style={{
-          backgroundImage: `linear-gradient(transparent,rgba(255,255,255,0.4)), url(${makeBgPath(
+          backgroundImage: `linear-gradient(transparent,rgba(0,0,0,0.7)), url(${makeBgPath(
             data?.backdrop_path || selectedMovie?.backdrop_path || ""
           )})`,
         }}
       />
-      <Title>{data?.title}</Title>
-      <OverView>{data?.overview}</OverView>
+      {!isLoading && (
+        <>
+          <Title>{data?.title}</Title>
+          <OverView>{data?.overview}</OverView>
+          <Info>
+            <div>Release Date: {data?.release_date}</div>
+            <div>
+              Runtime : {data?.runtime ? Math.floor(data?.runtime / 60) : ""}h{" "}
+              {data?.runtime ? data?.runtime % 60 : ""}m
+            </div>
+            <div>
+              Homepage :{" "}
+              <a href={data?.homepage} target="blank">
+                {data?.homepage}
+              </a>
+            </div>
+            <div>
+              Genres :{" "}
+              {data?.genres.map((genre) => (
+                <span key={genre.id}>{genre.name} </span>
+              ))}
+            </div>
+          </Info>
+        </>
+      )}
     </Wrapper>
   );
 };

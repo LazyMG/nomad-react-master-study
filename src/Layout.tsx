@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 850px;
   height: 100%;
-  background-color: white;
+  background-color: ${(props) => props.theme.bgColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,19 +21,19 @@ const Wrapper = styled.div`
 const Header = styled.nav`
   width: 100%;
   max-width: 850px;
-  height: 50px;
+  height: 60px;
   top: 0;
-  background-color: white;
   display: flex;
   align-items: center;
   position: fixed;
+  background-color: ${(props) => props.theme.bgColor};
   z-index: 1;
 `;
 
 const Content = styled.div`
   width: 100%;
   padding: 20px 15px;
-  border: 1px solid black;
+  border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
 `;
 

@@ -16,7 +16,7 @@ export const isModalOpenState = atom<boolean>({
   default: false,
 });
 
-export const popularMoviesState = atom<IMovie[]>({
-  key: "popularMoviesState",
-  default: [],
+export const lightThemeState = atom<boolean>({
+  key: "lightThemeState",
+  default: true,
 });

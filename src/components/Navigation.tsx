@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { lightThemeState } from "../atoms";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,6 +16,7 @@ const Wrapper = styled.div`
 const Links = styled.ul`
   display: flex;
   gap: 10px;
+  align-items: center;
 `;
 
 const LinkItem = styled.li<{ $isMatch: boolean }>`
@@ -21,10 +24,13 @@ const LinkItem = styled.li<{ $isMatch: boolean }>`
   font-weight: bold;
   position: relative;
   border-radius: 10px;
-  background-color: ${({ $isMatch }) => $isMatch && "rgba(0,0,0,0.1)"};
+  background-color: ${(props) => (props.$isMatch ? props.theme.pointBg : "")};
+
+  color: ${(props) => props.theme.textColor};
 
   &:hover {
-    background-color: ${({ $isMatch }) => ($isMatch ? "" : "rgba(0,0,0,0.04)")};
+    background-color: ${(props) =>
+      props.$isMatch ? "" : props.theme.hoverColor};
   }
 `;
 
@@ -33,19 +39,41 @@ const Circle = styled(motion.div)`
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background-color: black;
+  background-color: ${(props) => props.theme.textColor};
   left: 0;
   right: 0;
   margin: 0 auto;
   top: 32px;
 `;
 
-const Divider = styled.span``;
+const Divider = styled.span`
+  color: ${(props) => props.theme.textColor};
+`;
+
+const ThemeButton = styled.div`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  font-size: 22px;
+  user-select: none;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.hoverColor};
+  }
+`;
 
 const Navigation = () => {
   const popularMatch = useMatch("/");
   const comingSoonMatch = useMatch("/coming-soon");
   const nowPlayingMatch = useMatch("/now-playing");
+  const [isLightTheme, setIsLightTheme] = useRecoilState(lightThemeState);
 
   return (
     <Wrapper>
@@ -65,6 +93,9 @@ const Navigation = () => {
           {nowPlayingMatch && <Circle layoutId="navCircle" />}
         </LinkItem>
       </Links>
+      <ThemeButton onClick={() => setIsLightTheme((prev) => !prev)}>
+        {isLightTheme ? "☀️" : "🌙"}
+      </ThemeButton>
     </Wrapper>
   );
 };

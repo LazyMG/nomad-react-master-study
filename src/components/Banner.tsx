@@ -40,7 +40,7 @@ const RightArrow = styled(SideArrow)`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 55px;
+  margin-top: 65px;
   width: 100%;
   position: relative;
   display: flex;
@@ -70,7 +70,7 @@ const Cover = styled.div<{ $bgPhoto: string }>`
   flex-direction: column;
   justify-content: center;
   padding: 60px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)),
     url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
@@ -86,6 +86,9 @@ const Title = styled.div`
   padding: 10px 15px;
   font-size: 38px;
   user-select: none;
+  font-family: "Roboto Slab", serif;
+  text-shadow: #000000 1px 0 10px;
+  font-weight: 700;
 `;
 
 const Banner = () => {

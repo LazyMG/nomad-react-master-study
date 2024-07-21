@@ -96,7 +96,6 @@ const List = ({ movies, path }: { movies: IMovie[]; path: string }) => {
   }, [setCurrentPath, location.pathname]);
 
   const closeModal = () => {
-    console.log(selectedMovie);
     setIsModalOpen(false);
     navigate(path);
   };

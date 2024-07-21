@@ -21,6 +21,8 @@ const Image = styled(motion.img)`
 
 const Title = styled.h2`
   text-align: center;
+  font-family: "Francois One", sans-serif;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Movie = ({ movie, path }: { movie: IMovie; path: string }) => {
@@ -47,7 +49,7 @@ const Movie = ({ movie, path }: { movie: IMovie; path: string }) => {
       layoutId={String(movie.id) + path}
       onClick={() => gotoMovieDetail(movie.id)}
       whileHover={{
-        y: -15,
+        y: -10,
         transition: {
           type: "spring",
           mass: 0.5,
